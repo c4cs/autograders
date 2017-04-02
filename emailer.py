@@ -16,7 +16,7 @@ from email.mime.base import MIMEBase
 ASSIGNMENT_NAME = 'Homework 10'
 TOTAL_POSSIBLE = 4.
 REGRADE_DATE = 'April 7'
-AUTOGRADER_LINK = "http://google.com"
+AUTOGRADER_LINK = 'https://github.com/c4cs/autograders/blob/master/unit-testing/test_cases.py'
 
 USAGE='Usage: ./emailer.py [write|send] [results.json]'
 if len(sys.argv) < 2:
