@@ -4,20 +4,20 @@ import numpy
 import json
 import sh
 import pprint
-from collections import defaultdict, Counter
+from collections import defaultdict, Counter, OrderedDict
 from termcolor import cprint
 
-class ImmutableDict(dict):
+class ImmutableDict(OrderedDict):
     def __setitem__(self, key, value):
         if key in self:
             raise LookupError('{} already returned'.format(key))
-        dict.__setitem__(self, key, value)
+        OrderedDict.__setitem__(self, key, value)
 
 class TestCaseResult:
-    def __init__(self, name, message, score, additional_text=''):
-        self.name = name
+    def __init__(self, message, score, points_possible, additional_text=''):
         self.message = message
-        self.score = score
+        self.score = float(score)
+        self.points_possible = float(points_possible)
         self.additional_text = additional_text
 
     def __repr__(self):
@@ -28,7 +28,7 @@ class TestCase:
         return self.__class__.__name__
 
     def result(self, message, score, additional_text=None):
-        return TestCaseResult(str(self), message, float(score), additional_text)
+        return TestCaseResult(message, float(score), self.points_possible, additional_text)
 
     def test(self, submission):
         raise NotImplementedError('Subclasses must override this')
@@ -88,7 +88,7 @@ class Autograder:
                 err = e.stderr.decode('utf-8')
                 self.log(err, color='red')
                 self.results[uniq] = {
-                    'Clone': TestCaseResult('Clone', 'Failed', 0., additional_text=err)
+                    'Clone': TestCaseResult('Failed', 0., 0., additional_text=err)
                 }
 
                 # don't try and run test cases here, we failed
