@@ -105,6 +105,13 @@ class Autograder:
     def get_results(self):
         return self.results
 
+    def load_results(self, data):
+        for uniq, result in data.items():
+            self.grades[uniq] = result['score']
+            self.results[uniq] = ImmutableDict()
+            for testcase, testcase_result in result['test_case_results'].items():
+                self.results[uniq][testcase] = TestCaseResult(**testcase_result)
+
     def to_json(self):
         uniq_to_result = ImmutableDict()
         for uniq, result in self.results.items():
