@@ -51,8 +51,8 @@ def send_email(uniqname, body):
         sm = smtplib.SMTP_SSL(host=SMTP_HOST)
         sm.login(SMTP_USER, SMTP_PASS)
 
-        send_to = [TO,] + CC
-        sm.sendmail(FROM, send_to, msg.as_string())
+    send_to = [TO,] + CC
+    sm.sendmail(FROM, send_to, msg.as_string())
 
 loc = '/tmp/c4cs-autograder-emails/{}'.format(ASSIGNMENT_NAME.lower().replace(' ', '_'))
 
