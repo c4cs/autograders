@@ -3,6 +3,7 @@
 import numpy
 import json
 import sh
+import os
 import pprint
 from collections import defaultdict, Counter, OrderedDict
 from termcolor import cprint
@@ -74,12 +75,17 @@ class Autograder:
         for line in message.splitlines():
             cprint(' '*indent + line, color)
 
-    def clone(self):
+    def clone(self, rerun=False):
         for uniq in list(self.submissions.keys()):
             # don't use .items() because we're deleting things
             submission = self.submissions[uniq]
 
+            if os.path.isdir(submission[1]) and not rerun:
+                self.log('{} exists, run with rerun=True to re-clone'.format(submission[1]))
+                continue
+
             self.log('Cloning {} into {} for {}'.format(submission[0], submission[1], uniq))
+
             sh.rm('-Rf', submission[1])
             sh.mkdir('-p', submission[1])
             try:
@@ -90,6 +96,9 @@ class Autograder:
                 self.results[uniq] = {
                     'Clone': TestCaseResult('Failed', 0., 0., additional_text=err)
                 }
+
+                # clean up
+                sh.rm('-Rf', submission[1])
 
                 # don't try and run test cases here, we failed
                 del self.submissions[uniq]

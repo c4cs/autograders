@@ -9,9 +9,14 @@ sys.path.append('..')
 import autograder
 from test_cases import *
 
-if len(sys.argv) != 2:
-    print('Usage: ./grade.py submissions.csv')
+if len(sys.argv) < 2:
+    print('Usage: ./grade.py submissions.csv [rerun]')
     exit()
+
+if len(sys.argv) > 2 and sys.argv[2].lower() == 'rerun':
+    rerun = True
+else:
+    rerun = False
 
 uniq_to_repo = {}
 with open(sys.argv[1]) as csvf:
@@ -37,7 +42,7 @@ submissions = {
 
 ag = autograder.Autograder(test_cases, submissions)
 
-ag.clone()
+ag.clone(rerun)
 
 ag.grade()
 
