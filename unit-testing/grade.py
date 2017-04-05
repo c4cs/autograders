@@ -11,6 +11,13 @@ import cli
 
 from test_cases import *
 
+def score_to_final(score):
+    if score > 2.:
+        return 4.
+    if score > .25:
+        return 2.
+    return 0.
+
 def get_test_cases_and_submissions(submissionsf):
     uniq_to_repo = {}
 
@@ -45,5 +52,6 @@ cli.init(run_cli)
 
 run_cli(obj={
     'get_test_cases_and_submissions': get_test_cases_and_submissions,
+    'ceil_func': score_to_final,
     'ag': autograder.Autograder(),
 })

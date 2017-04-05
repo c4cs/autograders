@@ -7,6 +7,8 @@ import os
 import autograder
 from termcolor import cprint
 
+import emails
+
 def init(cli):
     cli.add_command(grade)
     cli.add_command(write_results)
@@ -79,9 +81,25 @@ def write_canvas(obj, outfile):
 
 @click.command()
 @click.pass_obj
-def write_emails(obj):
+@click.option('--assignment-name', '-n', required=True)
+@click.option('--total-points', '-t', required=True)
+@click.option('--regrade-date', '-r', required=True)
+@click.option('--autograder-link', '-l', required=True)
+@click.option('--dest', '-d', required=True)
+def write_emails(obj, assignment_name, total_points, regrade_date, autograder_link, dest):
     '''Generate autograder emails but do not send'''
-    raise NotImplementedError()
+    dest = os.path.abspath(os.path.expanduser(dest))
+    total_points = float(total_points)
+
+    cprint('Writing {} emails to {}...'.format(len(obj['ag'].to_dict()), dest), 'green')
+
+    if 'ceil_func' in obj:
+        ceil_func = obj['ceil_func']
+    else:
+        ceil_func = lambda x: x
+
+    emails.write_emails(obj['ag'].to_dict(), assignment_name, total_points,
+            regrade_date, autograder_link, dest, ceil_func)
 
 @click.command()
 @click.pass_obj
