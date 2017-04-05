@@ -28,12 +28,19 @@ $ ./grade.py load_results print_stats
 $ ./grade.py load_results --help
 
 # write emails but don't send
-./grade.py load_results write_emails \
+$ ./grade.py load_results write_emails \
     --assignment-name="Homework 10" \
     --total-points=4 \
     --regrade-date="April 7" \
     --autograder-link="https://google.com" \
     --dest="/tmp/hw10_emails"
+
+# send the emails
+$ ./grade.py send_emails
+    --loc="/tmp/hw10_emails"
+    --subject="[c4cs] HW10 Graded"
+    --smtp-username="mterwil"
+    --cc="mterwil@umich.edu"
 ```
 
 ### Creating a new autograder
