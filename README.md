@@ -36,10 +36,10 @@ $ ./grade.py load_results write_emails \
     --dest="/tmp/hw10_emails"
 
 # send the emails
-$ ./grade.py send_emails
-    --loc="/tmp/hw10_emails"
-    --subject="[c4cs] HW10 Graded"
-    --smtp-username="mterwil"
+$ ./grade.py send_emails \
+    --loc="/tmp/hw10_emails" \
+    --subject="[c4cs] HW10 Graded" \
+    --smtp-username="mterwil" \
     --cc="mterwil@umich.edu"
 ```
 
@@ -52,22 +52,3 @@ The `autograder.py` script contains a collection of classes.
 
 ### Dependencies
 Probably a lot of them... Sorry.
-
-### Emailing grades to students
-
-You'll need an `email.cfg` file, which just contains host, user, and password on
-one line each. You can use `smtp.mail.umich.edu`, your uniqname, and Kerberos
-password.
-
-First, write the emails:
-
-```bash
-$ ./emailer.py write results.json
-```
-
-Then give them a look. If you want to do a test send you can prune the directory
-and rename a student's uniqname to yours. When you're ready:
-
-```bash
-$ ./emailer.py send
-```
