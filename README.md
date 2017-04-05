@@ -16,16 +16,13 @@ An assortment of scripts to help manage autograding of assignments.
 ```bash
 # grade everything in a given submissions file
 # will clone but throw away the grades
-$ ./grade.py grade -s ~/Downloads/c4cs-rpn-repos.csv 
+$ ./grade.py grade --submissions ~/Downloads/c4cs-rpn-repos.csv 
 
-# you really want to chain commands:
-$ ./grade.py grade -s ~/Downloads/c4cs-rpn-repos.csv write_results
+# you really want to chain commands (write results.json and scores.csv):
+$ ./grade.py grade -s ~/Downloads/c4cs-rpn-repos.csv write_results write_canvas print_stats
 
-# now to load those results back up:
+# you can also load the results back up from results.json:
 $ ./grade.py load_results print_stats
-
-# and each command and subcommand has help
-$ ./grade.py load_results --help
 
 # write emails but don't send
 $ ./grade.py load_results write_emails \
@@ -41,6 +38,10 @@ $ ./grade.py send_emails \
     --subject="[c4cs] HW10 Graded" \
     --smtp-username="mterwil" \
     --cc="mterwil@umich.edu"
+
+# and each command and subcommand has help
+$ ./grade.py load_results --help
+
 ```
 
 ### Creating a new autograder
