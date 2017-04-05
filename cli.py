@@ -103,6 +103,18 @@ def write_emails(obj, assignment_name, total_points, regrade_date, autograder_li
 
 @click.command()
 @click.pass_obj
-def send_emails(obj):
+@click.option('--loc', '-l', required=True)
+@click.option('--subject', '-s', required=True)
+@click.option('--cc', '-c', default='')
+@click.option('--smtp-host', '-h', default='smtp.mail.umich.edu', show_default=True)
+@click.option('--smtp-username', '-u', required=True, help="Just your uniqname for smtp.mail.umich.edu")
+@click.option('--smtp-password', '-p', prompt='SMTP password', hide_input=True)
+def send_emails(obj, loc, subject, cc, smtp_host, smtp_username, smtp_password):
     '''Send pre-generated autograder emails'''
-    raise NotImplementedError()
+    cc = cc.split()
+
+    emails.send_emails(loc, subject, cc, {
+        'host': smtp_host,
+        'user': smtp_username,
+        'pass': smtp_password,
+    })
