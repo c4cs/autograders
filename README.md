@@ -26,6 +26,14 @@ $ ./grade.py load_results print_stats
 
 # and each command and subcommand has help
 $ ./grade.py load_results --help
+
+# write emails but don't send
+./grade.py load_results write_emails \
+    --assignment-name="Homework 10" \
+    --total-points=4 \
+    --regrade-date="April 7" \
+    --autograder-link="https://google.com" \
+    --dest="/tmp/hw10_emails"
 ```
 
 ### Creating a new autograder
