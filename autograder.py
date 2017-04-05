@@ -62,18 +62,22 @@ class TestRunner:
         return result
 
 class Autograder:
-    def __init__(self, test_cases, submissions):
-        self.submissions = submissions
+    def __init__(self):
         self.results = ImmutableDict()
         self.grades = ImmutableDict()
-        self.test_runner = TestRunner(
-            test_cases,
-            lambda msg, indent=0, color=None: self.log(msg, indent=indent+2, color=color)
-        )
 
     def log(self, message, indent=0, color=None):
         for line in message.splitlines():
             cprint(' '*indent + line, color)
+
+    def set_submissions(self, submissions):
+        self.submissions = submissions
+
+    def set_test_cases(self, test_cases):
+        self.test_runner = TestRunner(
+            test_cases,
+            lambda msg, indent=0, color=None: self.log(msg, indent=indent+2, color=color)
+        )
 
     def clone(self, rerun=False):
         for uniq in list(self.submissions.keys()):

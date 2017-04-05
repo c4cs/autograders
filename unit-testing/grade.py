@@ -1,52 +1,49 @@
 #!/usr/bin/env python3
 
+import click
 import csv
 import json
 import sys
 
 sys.path.append('..')
 
-import autograder
+import cli
+
 from test_cases import *
 
-if len(sys.argv) < 2:
-    print('Usage: ./grade.py submissions.csv [rerun]')
-    exit()
+def get_test_cases_and_submissions(submissionsf):
+    uniq_to_repo = {}
 
-if len(sys.argv) > 2 and sys.argv[2].lower() == 'rerun':
-    rerun = True
-else:
-    rerun = False
+    def gen_submissions():
+        for uniq, repo in uniq_to_repo.items():
+            yield uniq, (repo, '/tmp/c4cs-rpn/{}'.format(uniq))
 
-uniq_to_repo = {}
-with open(sys.argv[1]) as csvf:
-    for row in csv.DictReader(csvf):
-        uniq = row['Email Address'].split('@')[0]
-        repo = row['Give the link to your github repository']
-        uniq_to_repo[uniq] = repo
+    with open(submissionsf) as csvf:
+        for row in csv.DictReader(csvf):
+            uniq = row['Email Address'].split('@')[0]
+            repo = row['Give the link to your github repository']
+            uniq_to_repo[uniq] = repo
 
-test_cases = [
-    TestTravis(),
-    TestExponentiationGood(),
-    TestExponentiationBad(),
-    TestExponentiationImpl(),
-]
+    test_cases = [
+        TestTravis(),
+        TestExponentiationGood(),
+        TestExponentiationBad(),
+        TestExponentiationImpl(),
+    ]
 
-def gen_submissions():
-    for uniq, repo in uniq_to_repo.items():
-        yield uniq, (repo, '/tmp/c4cs-rpn/{}'.format(uniq))
+    submissions = {
+        uniq: submission for uniq, submission in gen_submissions()
+    }
 
-submissions = {
-    uniq: submission for uniq, submission in gen_submissions()
-}
+    return test_cases, submissions
 
-ag = autograder.Autograder(test_cases, submissions)
+@click.group(chain=True)
+def run_cli():
+    pass
 
-ag.clone(rerun)
+cli.init(run_cli)
 
-ag.grade()
-
-with open('results.json', 'w') as f:
-    f.write(ag.to_json())
-
-ag.print_stats()
+run_cli(obj={
+    'get_test_cases_and_submissions': get_test_cases_and_submissions,
+    'ag': autograder.Autograder(),
+})
