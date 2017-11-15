@@ -56,9 +56,13 @@ import test_rpn
 c = rpn.calculate
 T = test_rpn.TestBasics()
 fns = inspect.getmembers(T, predicate=lambda x: inspect.ismethod(x) and 'test_' in x.__name__ and 'test_add' not in x.__name__ and 'test_subtract' not in x.__name__ and 'test_multiplication' not in x.__name__ and 'test_multiply' not in x.__name__ and 'test_divide' not in x.__name__ and 'test_badstring' not in x.__name__)
+test_exp_names = ['test_pow','test_exponent1', 'test_exponential', 'test_carat',
+'test_exp', 'test_exponent', 'test_power3', 'test_exponentiation', 'test_power',
+'test_expo', 'test_exponentiate', 'test_exponant', 'test_carrot']
+
 if len(fns) > 1:
     for f in fns:
-        if f[0] == 'test_pow' or f[0] == 'test_exponent1' or f[0] == 'test_exponential' or f[0] == 'test_carat' or f[0] == 'test_exp' or f[0] == 'test_exponent' or f[0] == 'test_power3' or f[0] == 'test_exponentiation' or f[0] == 'test_power' or f[0] == 'test_expo' or f[0] == 'test_exponentiate' or f[0] == 'test_exponant':
+        if f[0] in test_exp_names:
             test_fn = f[1]
             break
     else:
