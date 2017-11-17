@@ -28,7 +28,7 @@ def get_test_cases_and_submissions(submissionsf):
     with open(submissionsf) as csvf:
         for row in csv.DictReader(csvf):
             uniq = row['Email Address'].split('@')[0]
-            repo = row['Give the link to your github repository']
+            repo = row['Link to your Github repository']
             uniq_to_repo[uniq] = repo
 
     test_cases = [
