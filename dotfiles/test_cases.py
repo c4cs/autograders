@@ -47,7 +47,7 @@ class FuzzyRecursiveFileFinder(autograder.TestCase):
                 additional_text = 'Non-empty, non-symlink files:\n'
                 additional_text += '\n'.join([ '\t{}'.format(f) for f in seen_files])
 
-            return self.result('No {} configuration file found'.format(self.ftype), 0, 
+            return self.result('No {} configuration file found'.format(self.ftype), 0,
                     additional_text=additional_text)
 
 class ShellConfigFile(FuzzyRecursiveFileFinder):
@@ -83,6 +83,7 @@ class AnyOtherConfigFile(FuzzyRecursiveFileFinder):
     valid_files = [
         ('alias', 1., 'Matched other config file "alias"'),
         ('bash_aliases', 1., 'Matched other config file "bash_aliases"'),
+        ('bash_logout', 1., 'Matched other config file "bash_logout"'),
         ('emacs', 1., 'Matched other config file "emacs"'),
         ('emacs.d/init.el', 1., 'Matched other config file "emacs.d/init.el"'),
         ('functions', 1., 'Matched other config file "functions"'),
@@ -98,4 +99,8 @@ class AnyOtherConfigFile(FuzzyRecursiveFileFinder):
         ('bootstrap.sh', 1., 'Matched other config file "bootstrap.sh"'),
         ('setup_dotfiles.sh', 1., 'Matched other config file "setup_dotfiles.sh"'),
         ('commands_used.sh', 1., 'Matched other config file "commands_used.sh"'),
+        ('gitignore', 1., 'Matched other config file "gitignore"'),
+        ('mozilla', 1., 'Matched other config file "mozilla"'),
+        ('wget-hsts', 1., 'Matched other config file "wget-hsts"'),
+        ('atom/keymap.cson', 1., 'Matched other config file "atom/keymap.cson"'),
     ]
