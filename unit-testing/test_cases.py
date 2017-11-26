@@ -127,7 +127,7 @@ class TestExponentiationBad(TestExponentiation):
         lines = self.get_lines(repo_path)
 
         if lines[3] == '>>> GoodFail':
-            return self.result('Test case catches bad exponentiation implmentation', 1)
+            return self.result('Test case catches bad exponentiation implementation', 1)
         elif lines[3] == '>>> !! NO TEST FN':
             return self.result('Could not find test case for exponentiation', 0)
         else:
