@@ -26,7 +26,7 @@ import git # pip install gitpython
 import sh
 from sh import mkdir, rm
 
-GRADES_PATH = '/Volumes/Documents/University\ of\ Michigan/Sophomore/IA398/GH_autograders/autograders/git-II'
+GRADES_PATH = '/Users/Tarun/Documents/GH_autograders/autograders/git-II/'
 
 if 'rerun' not in sys.argv:
     if os.path.exists('/tmp/q1') or os.path.exists('/tmp/q2a') or os.path.exists('/tmp/q2b'):
@@ -76,8 +76,8 @@ sm = None
 def send_email(uniqname, body):
     SUBJECT = "[C4CS] Homework 5 Graded"
     FROM = 'c4cs-staff@umich.edu'
-    TO = uniqname + '@umich.edu'
-    #TO = 'tarunsk@umich.edu'
+    #TO = uniqname + '@umich.edu'
+    TO = 'tarunsk@umich.edu'
     encoding = 'html'
 
     msg = MIMEMultipart()
