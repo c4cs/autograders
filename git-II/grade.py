@@ -26,7 +26,7 @@ import git # pip install gitpython
 import sh
 from sh import mkdir, rm
 
-GRADES_PATH = '/Users/cameron/src/college/F17/398/c4cs.github.io/static/f17/hw/autograders/git-II/'
+GRADES_PATH = '/Volumes/Documents/University\ of\ Michigan/Sophomore/IA398/GH_autograders/autograders/git-II'
 
 if 'rerun' not in sys.argv:
     if os.path.exists('/tmp/q1') or os.path.exists('/tmp/q2a') or os.path.exists('/tmp/q2b'):
@@ -77,7 +77,7 @@ def send_email(uniqname, body):
     SUBJECT = "[C4CS] Homework 5 Graded"
     FROM = 'c4cs-staff@umich.edu'
     TO = uniqname + '@umich.edu'
-    #TO = 'cgagnon@umich.edu'
+    #TO = 'tarunsk@umich.edu'
     encoding = 'html'
 
     msg = MIMEMultipart()
@@ -143,7 +143,7 @@ TOTAL_COMMITS_THRESHOLD = 5
 
 def grade_q1(uniqname):
     try:
-        repo,path = clone('q1', uniqname, 'c4cs-f17-wk5')
+        repo,path = clone('q1', uniqname, 'c4cs-w18-wk5')
     except sh.ErrorReturnCode as e:
         text = '''
 <p><strong>Error! Failed to clone {}</strong></p>
@@ -156,7 +156,7 @@ def grade_q1(uniqname):
 <pre>
 {}
 </pre>
-'''.format('c4cs-f17-wk5', e.full_cmd, e.stdout.decode('utf8'), e.stderr.decode('utf8'))
+'''.format('c4cs-w18-wk5', e.full_cmd, e.stdout.decode('utf8'), e.stderr.decode('utf8'))
         return 0, text
 
     non_merge_count = 0
@@ -321,7 +321,7 @@ even just an extra line or two as a quick note.\
 
 def grade_q2a(uniqname):
     try:
-        repo,path = clone('q2a', uniqname, 'c4cs-f17-conflict1')
+        repo,path = clone('q2a', uniqname, 'c4cs-git-conflict1')
     except sh.ErrorReturnCode as e:
         text = '''
 <p><strong>Error! Failed to clone {}</strong></p>
@@ -334,7 +334,7 @@ def grade_q2a(uniqname):
 <pre>
 {}
 </pre>
-'''.format('c4cs-f17-conflict1', e.full_cmd, e.stdout.decode('utf8'), e.stderr.decode('utf8'))
+'''.format('c4cs-git-conflict1', e.full_cmd, e.stdout.decode('utf8'), e.stderr.decode('utf8'))
         return 0, text
 
 
@@ -408,7 +408,7 @@ Success
 
 def grade_q2b(uniqname):
     try:
-        repo,path = clone('q2b', uniqname, 'c4cs-f17-conflict2')
+        repo,path = clone('q2b', uniqname, 'c4cs-git-conflict2')
     except sh.ErrorReturnCode as e:
         text = '''
 <p><strong>Error! Failed to clone {}</strong></p>
@@ -421,7 +421,7 @@ def grade_q2b(uniqname):
 <pre>
 {}
 </pre>
-'''.format('c4cs-f17-conflict2', e.full_cmd, e.stdout.decode('utf8'), e.stderr.decode('utf8'))
+'''.format('c4cs-git-conflict2', e.full_cmd, e.stdout.decode('utf8'), e.stderr.decode('utf8'))
         return 0, text
 
     with sh.pushd(path):
@@ -489,9 +489,9 @@ def grade():
             email += '''
 <hr />
 <p>If you believe there to be an issue with the grading of your assignment
-reply to this email before Monday, March&nbsp;13.</p>
+reply to this email before Saturday, February&nbsp;24.</p>
 <p>If you would like more information on how your assignment was graded, you can
-look over the <a href="https://github.com/c4cs/c4cs.github.io/blob/master/static/f17/hw/autograders/git-II/grade.py">autograder script</a>.</p>
+look over the <a href="https://github.com/c4cs/autograders/tree/master/git-II">autograder script</a>.</p>
 '''
 
         email += '''
@@ -528,9 +528,9 @@ access all of your repositories for this assignment.</p>
 <p><strong>NOTE:</strong> Repositories must be named exactly correctly!</p>
 '''.format(name)
     for q, repo in (
-            ('1', 'c4cs-f17-wk5'),
-            ('2a', 'c4cs-f17-conflict1'),
-            ('2b', 'c4cs-f17-conflict2'),
+            ('1', 'c4cs-w18-wk5'),
+            ('2a', 'c4cs-git-conflict1'),
+            ('2b', 'c4cs-git-conflict2'),
             ):
         try:
             email += '<hr /><h3>Question {} ({})</h3>'.format(q,repo)
