@@ -2,7 +2,11 @@ Things to do before running the script (may be incomplete):
 
 1) Get a copy of the course gradebook and name it `gradebook.csv` in the local
 directory. This can be done through Canvas in the "grades" section and clicking
-"Export".
+"Export". Note that the file may have erroneous bytes at the start (you can check
+this using `hexdump gradebook.csv`). If this is the case, use the following command
+to delete the correct number of bits from the start of the file:
+
+> `dd if=<input_file_name> of=<output_file_name> ibs=<bytes_to_delete> skip=1`
 
 2) Open the `grade.py` file and change the dates that people are supposed to
 respond by for re-grade requests. Also, for part `q2b` there is a diff check
