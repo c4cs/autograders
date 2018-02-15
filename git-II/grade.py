@@ -76,8 +76,8 @@ sm = None
 def send_email(uniqname, body):
     SUBJECT = "[C4CS] Homework 5 Graded"
     FROM = 'c4cs-staff@umich.edu'
-    #TO = uniqname + '@umich.edu'
-    TO = 'tarunsk@umich.edu'
+    TO = uniqname + '@umich.edu'
+    #TO = 'tarunsk@umich.edu'
     encoding = 'html'
 
     msg = MIMEMultipart()
