@@ -58,7 +58,8 @@ T = test_rpn.TestBasics()
 fns = inspect.getmembers(T, predicate=lambda x: inspect.ismethod(x) and 'test_' in x.__name__ and 'test_add' not in x.__name__ and 'test_subtract' not in x.__name__ and 'test_multiplication' not in x.__name__ and 'test_multiply' not in x.__name__ and 'test_divide' not in x.__name__ and 'test_badstring' not in x.__name__)
 test_exp_names = ['test_pow','test_exponent1', 'test_exponential', 'test_carat',
 'test_exp', 'test_exponent', 'test_power3', 'test_exponentiation', 'test_power',
-'test_expo', 'test_exponentiate', 'test_exponant', 'test_carrot']
+'test_expo', 'test_exponentiate', 'test_exponant', 'test_carrot', 'test_exponentiationPos',
+'test_exponentiationZ', 'test_exponentiationNeg']
 
 if len(fns) > 1:
     for f in fns:
