@@ -4,6 +4,7 @@ from jinja2 import Environment, FileSystemLoader
 import os
 import sh
 from termcolor import cprint
+import time
 
 import smtplib
 from email.mime.text import MIMEText
@@ -31,6 +32,7 @@ def write_emails(data, assignment_name, total_points, regrade_date, autograder_l
 def send_email(uniqname, body, SUBJECT, CC):
     FROM = 'c4cs-staff@umich.edu'
     TO = uniqname + '@umich.edu'
+    REPLY_TO_ADDRESS = 'c4cs-staff@umich.edu'
     encoding = 'html'
 
     cprint('Sending {}'.format(TO), 'green')
@@ -41,6 +43,7 @@ def send_email(uniqname, body, SUBJECT, CC):
     msg['To'] = TO
     msg['CC'] = ','.join(CC)
     msg.attach(MIMEText(body, encoding))
+    msg.add_header('reply-to', REPLY_TO_ADDRESS)
 
     global sm
 
@@ -53,6 +56,13 @@ def send_emails(loc, subject, cc, smtp):
     sm.login(smtp['user'], smtp['pass'])
 
     with sh.pushd(loc):
+        num_sent = 0;
         for uniq in os.listdir():
             with open(uniq) as f:
                 send_email(uniq, f.read(), subject, cc)
+                num_sent += 1
+                # Be kind to the smtp server
+                if num_sent % 50 == 0:
+                    time.sleep(300)
+                else:
+                    time.sleep(1)
