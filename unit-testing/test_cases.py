@@ -11,7 +11,12 @@ class TestTravis(autograder.TestCase):
         'test_rpn.py',
         'python -m unittest',
         'python3 -m unittest',
+        'python -m unittest test_rpn',
         'python test_rpn.py',
+        'python -m unittest -v test_rpn',
+        'python -m unittest -f test_rpn.py',
+        'python -m unittest test_rpn.TestBasics',
+        'python3 test_rpn.py',
         'coverage run test_rpn.py',
         'coverage run -m unittest',
         'coverage run -m  unittest',
@@ -21,6 +26,7 @@ class TestTravis(autograder.TestCase):
         'nosetests',
         'nosetests --with-coverage',
         'nosetests --with-coverage --cover-erase --cover-package=rpn --cover-tests',
+        'pytest',
     ]
 
     def test(self, repo_path):
