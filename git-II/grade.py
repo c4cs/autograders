@@ -45,7 +45,7 @@ else:
 
 mkdir('-p', TIMEDIR)
 
-ACTUALLY_SEND = False
+ACTUALLY_SEND = True
 
 
 def uniqs():
@@ -74,16 +74,18 @@ SMTP_PASS = os.getenv('SMTP_PASS')
 sm = None
 
 def send_email(uniqname, body):
-    SUBJECT = "[C4CS] Homework 5 Graded"
+    SUBJECT = "[C4CS] Homework 6 Graded"
     FROM = 'c4cs-staff@umich.edu'
     TO = uniqname + '@umich.edu'
-    #TO = 'tarunsk@umich.edu'
+    REPLY_TO_ADDRESS = 'c4cs-staff@umich.edu'
+    # TO = 'tarunsk@umich.edu'
     encoding = 'html'
 
     msg = MIMEMultipart()
     msg['Subject'] = SUBJECT
     msg['From'] = FROM
     msg['To'] = TO
+    msg.add_header('reply-to', REPLY_TO_ADDRESS)
     msg.attach(MIMEText(body, encoding))
 
     if not ACTUALLY_SEND:
@@ -143,7 +145,7 @@ TOTAL_COMMITS_THRESHOLD = 5
 
 def grade_q1(uniqname):
     try:
-        repo,path = clone('q1', uniqname, 'c4cs-w18-wk5')
+        repo,path = clone('q1', uniqname, 'c4cs-f18-wk6')
     except sh.ErrorReturnCode as e:
         text = '''
 <p><strong>Error! Failed to clone {}</strong></p>
@@ -156,7 +158,7 @@ def grade_q1(uniqname):
 <pre>
 {}
 </pre>
-'''.format('c4cs-w18-wk5', e.full_cmd, e.stdout.decode('utf8'), e.stderr.decode('utf8'))
+'''.format('c4cs-f18-wk6', e.full_cmd, e.stdout.decode('utf8'), e.stderr.decode('utf8'))
         return 0, text
 
     non_merge_count = 0
@@ -321,7 +323,7 @@ even just an extra line or two as a quick note.\
 
 def grade_q2a(uniqname):
     try:
-        repo,path = clone('q2a', uniqname, 'c4cs-git-conflict1')
+        repo,path = clone('q2a', uniqname, 'c4cs-f18-conflict1')
     except sh.ErrorReturnCode as e:
         text = '''
 <p><strong>Error! Failed to clone {}</strong></p>
@@ -334,7 +336,7 @@ def grade_q2a(uniqname):
 <pre>
 {}
 </pre>
-'''.format('c4cs-git-conflict1', e.full_cmd, e.stdout.decode('utf8'), e.stderr.decode('utf8'))
+'''.format('c4cs-f18-conflict1', e.full_cmd, e.stdout.decode('utf8'), e.stderr.decode('utf8'))
         return 0, text
 
 
@@ -408,7 +410,7 @@ Success
 
 def grade_q2b(uniqname):
     try:
-        repo,path = clone('q2b', uniqname, 'c4cs-git-conflict2')
+        repo,path = clone('q2b', uniqname, 'c4cs-f18-conflict2')
     except sh.ErrorReturnCode as e:
         text = '''
 <p><strong>Error! Failed to clone {}</strong></p>
@@ -421,7 +423,7 @@ def grade_q2b(uniqname):
 <pre>
 {}
 </pre>
-'''.format('c4cs-git-conflict2', e.full_cmd, e.stdout.decode('utf8'), e.stderr.decode('utf8'))
+'''.format('c4cs-f18-conflict2', e.full_cmd, e.stdout.decode('utf8'), e.stderr.decode('utf8'))
         return 0, text
 
     with sh.pushd(path):
@@ -458,13 +460,14 @@ sales-2016-03-03
 
 
 def grade():
+    print('Begin grading')
     for uniqname, name in uniqs():
         print("grading {}".format(uniqname))
         grade = 0;
         email = '''
 <p>Hello {},</p>
 <br />
-<p>Your Homework&nbsp;5 has been graded (again).</p>
+<p>Your Homework&nbsp;6 has been re-graded.</p>
 <p>Your raw score is {:1.1f}/4.0</p>
 <p>Your final score is {}/4</p>
 '''
@@ -524,13 +527,13 @@ def do_check_clone(uniqname, name):
 <br />
 <p>This e-mail is a test run that verifies that the autograder can
 access all of your repositories for this assignment.</p>
-<p>This is the final test run before final grading Saturday night.</p>
+<p>This is the final test run before final grading this weekend.</p>
 <p><strong>NOTE:</strong> Repositories must be named exactly correctly!</p>
 '''.format(name)
     for q, repo in (
-            ('1', 'c4cs-w18-wk5'),
-            ('2a', 'c4cs-git-conflict1'),
-            ('2b', 'c4cs-git-conflict2'),
+            ('1', 'c4cs-f18-wk6'),
+            ('2a', 'c4cs-f18-conflict1'),
+            ('2b', 'c4cs-f18-conflict2'),
             ):
         try:
             email += '<hr /><h3>Question {} ({})</h3>'.format(q,repo)
@@ -594,7 +597,7 @@ def check_clones():
 # Generate canvas-friendly csv
 
 def write_canvas_grades():
-    week = 5
+    week = 6
     with open(GRADES_PATH + 'grades-hw{}.csv'.format(week), 'w') as out:
         with open(GRADES_PATH + 'gradebook.csv') as csvfile:
             cgb = csv.DictReader(csvfile)
@@ -602,18 +605,18 @@ def write_canvas_grades():
             fieldnames = (
                     'Student',
                     'ID',
-                    'SIS User ID',
+                    # 'SIS User ID',
                     'SIS Login ID',
-                    'Section',
+                    # 'Section',
                     'Homework Week {}'.format(week),
                     )
             writer = csv.DictWriter(out, fieldnames=fieldnames)
             writer.writerow({
                 'Student': 'Student',
                 'ID': 'ID',
-                'SIS User ID': 'SIS User ID',
+                # 'SIS User ID': 'SIS User ID',
                 'SIS Login ID': 'SIS Login ID',
-                'Section': 'Section',
+                # 'Section': 'Section',
                 'Homework Week {}'.format(week): 'Homework Week {}'.format(week),
                 })
 
@@ -630,9 +633,9 @@ def write_canvas_grades():
                 to_write = {
                         'Student': row['Student'],
                         'ID': row['ID'],
-                        'SIS User ID': row['SIS User ID'],
+                        # 'SIS User ID': row['SIS User ID'],
                         'SIS Login ID': row['SIS Login ID'],
-                        'Section': row['Section'],
+                        # 'Section': row['Section'],
                         'Homework Week {}'.format(week): score,
                         }
                 writer.writerow(to_write)
@@ -641,12 +644,20 @@ if __name__ == '__main__':
     if 'justsend' in sys.argv:
         ACTUALLY_SEND = True
         print("TIMEDIR", TIMEDIR)
-        for path in glob.iglob(TIMEDIR + '*'):
-            uniqname = path.split('/')[-1]
-            send_email(uniqname, open(path).read())
-            print('Sent {}'.format(uniqname))
-            # Be kind to the smtp server
-            time.sleep(1)
+        num_sent = 0;
+        with open('./sent_' + time.asctime(), 'w') as sent_list:
+            for path in glob.iglob(TIMEDIR + '*'):
+                print('{}', path)
+                uniqname = path.split('/')[-1]
+                send_email(uniqname, open(path).read())
+                sent_list.write(uniqname)
+                num_sent += 1
+                print('Sent {}'.format(uniqname))
+                # Be kind to the smtp server
+                if num_sent % 50 == 0:
+                    time.sleep(300)
+                else:
+                    time.sleep(1)
         sys.exit()
     if 'email' in sys.argv:
         ACTUALLY_SEND = True
@@ -654,4 +665,5 @@ if __name__ == '__main__':
         check_clones()
     if 'grade' in sys.argv:
         grade()
+        print('Graded')
         write_canvas_grades()
